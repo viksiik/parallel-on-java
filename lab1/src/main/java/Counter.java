@@ -1,6 +1,9 @@
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 class Counter {
     private int count = 0;
-    private final Object lock = new Object();
+    private final Lock lock = new ReentrantLock();
 
     public synchronized void increment() {
         count++;
@@ -23,14 +26,20 @@ class Counter {
     }
 
     public void incrementWithLock() {
-        synchronized (lock) {
+        lock.lock();
+        try {
             count++;
+        } finally {
+           lock.unlock();
         }
     }
 
     public void decrementWithLock() {
-        synchronized (lock) {
+        lock.lock();
+        try {
             count--;
+        } finally {
+            lock.unlock();
         }
     }
 
