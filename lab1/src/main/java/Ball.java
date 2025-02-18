@@ -1,44 +1,39 @@
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.util.Random;
 
-public class Ball {
+class Ball {
     private Component canvas;
-    private static final int SIZE = 20;
-    private static final int SPEED = 2;
-    private int x;
-    private int y;
-    private int dx = SPEED;
-    private int dy = SPEED;
+    private static final int XSIZE = 20;
+    private static final int YSIZE = 20;
+    private int x = 0;
+    private int y = 0;
+    private int dx = 2;
+    private int dy = 2;
     private Color color;
+    Random rand = new Random();
 
     public Ball(Component c, Color color) {
         this.canvas = c;
         this.color = color;
-
-        this.x = canvas.getWidth() / 2;
-        this.y = canvas.getHeight() / 2;
+        this.x = rand.nextInt(canvas.getWidth() - XSIZE);
+        this.y = rand.nextInt(canvas.getHeight() - YSIZE);
     }
 
     public void draw(Graphics2D g2) {
-        g2.setColor(color);
-        g2.fill(new Ellipse2D.Double(x, y, SIZE, SIZE));
+        g2.setColor(this.color);
+        g2.fill(new Ellipse2D.Double(x, y, XSIZE, YSIZE));
     }
 
     public void move() {
         x += dx;
         y += dy;
-
-        if (x < 0 || x + SIZE >= this.canvas.getWidth()) {
+        if (x < 0 || x + XSIZE >= this.canvas.getWidth()) {
             dx = -dx;
         }
-        if (y < 0 || y + SIZE >= this.canvas.getHeight()) {
+        if (y < 0 || y + YSIZE >= this.canvas.getHeight()) {
             dy = -dy;
         }
-
         this.canvas.repaint();
-    }
-
-    public Color getColor() {
-        return color;
     }
 }
