@@ -1,39 +1,30 @@
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
-import java.util.List;
-import java.util.Random;
 
 public class Ball {
     private Component canvas;
     private static final int SIZE = 20;
-    private int x = 0;
-    private int y = 0;
-    private int dx = 2;
-    private int dy = 2;
-    private boolean isInHole = false;
+    private static final int SPEED = 2;
+    private int x;
+    private int y;
+    private int dx = SPEED;
+    private int dy = SPEED;
+    private Color color;
 
-    public Ball(Component c) {
+    public Ball(Component c, Color color) {
         this.canvas = c;
+        this.color = color;
 
-        if (Math.random() < 0.5) {
-            x = new Random().nextInt(this.canvas.getWidth());
-            y = 0;
-        } else {
-            x = 0;
-            y = new Random().nextInt(this.canvas.getHeight());
-        }
+        this.x = canvas.getWidth() / 2;
+        this.y = canvas.getHeight() / 2;
     }
 
     public void draw(Graphics2D g2) {
-        if (!isInHole) {
-            g2.setColor(Color.darkGray);
-            g2.fill(new Ellipse2D.Double(x, y, SIZE, SIZE));
-        }
+        g2.setColor(color);
+        g2.fill(new Ellipse2D.Double(x, y, SIZE, SIZE));
     }
 
-    public void move(List<Hole> holes) {
-        if (isInHole) return;
-
+    public void move() {
         x += dx;
         y += dy;
 
@@ -44,43 +35,10 @@ public class Ball {
             dy = -dy;
         }
 
-        for (Hole hole : holes) {
-            if (hole.containsBall(this)) {
-                isInHole = true;
-                break;
-            }
-        }
-
         this.canvas.repaint();
     }
 
-    public boolean isRemoved() {
-        return isInHole;
+    public Color getColor() {
+        return color;
     }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public int getSize() {
-        return SIZE;
-    }
-
-    public boolean isInHole(List<Hole> holes) {
-        for (Hole hole : holes) {
-            int holeX = hole.getX();
-            int holeY = hole.getY();
-            int holeSize = Hole.getSize();
-
-            if (Math.abs(x - holeX) < holeSize && Math.abs(y - holeY) < holeSize) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 }
