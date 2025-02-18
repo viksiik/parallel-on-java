@@ -1,15 +1,18 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BounceFrame extends JFrame {
     private BallCanvas canvas;
-    public static final int WIDTH = 500;
-    public static final int HEIGHT = 400;
+    public static final int WIDTH = 450;
+    public static final int HEIGHT = 350;
 
     public BounceFrame() {
         this.setSize(WIDTH, HEIGHT);
-        this.setTitle("Bounce program");
-
+        this.setTitle("Bounce Program");
         this.canvas = new BallCanvas();
         Container content = this.getContentPane();
         content.add(this.canvas, BorderLayout.CENTER);
@@ -19,7 +22,22 @@ public class BounceFrame extends JFrame {
         JButton buttonStart = new JButton("Start");
         JButton buttonStop = new JButton("Stop");
 
-        buttonStart.addActionListener(e -> startBalls());
+        buttonStart.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Ball redBall = new Ball(canvas, Color.RED);
+                Ball blueBall = new Ball(canvas, Color.BLUE);
+
+                canvas.add(redBall);
+                canvas.add(blueBall);
+
+                BallThread redThread = new BallThread(redBall, canvas);
+                BallThreadJoin blueThread = new BallThreadJoin(blueBall, canvas, redThread);
+
+                redThread.start();
+                blueThread.start();
+            }
+        });
 
         buttonStop.addActionListener(e -> System.exit(0));
 
@@ -30,19 +48,4 @@ public class BounceFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
-
-    private void startBalls() {
-        Ball redBall = new Ball(canvas, Color.RED);
-        canvas.add(redBall);
-        BallThread redThread = new BallThread(redBall, canvas, Thread.MAX_PRIORITY);
-        redThread.start();
-
-        for (int i = 0; i < 1000; i++) {
-            Ball blueBall = new Ball(canvas, Color.BLUE);
-            canvas.add(blueBall);
-            BallThread blueThread = new BallThread(blueBall, canvas, Thread.MIN_PRIORITY);
-            blueThread.start();
-        }
-    }
-
 }
