@@ -11,6 +11,7 @@ public class Main {
         System.out.println("1 - synchronized method");
         System.out.println("2 - ReentrantLock");
         System.out.println("3 - ReadWriteLock");
+        System.out.println("->");
         int choice = scanner.nextInt();
         scanner.close();
 
