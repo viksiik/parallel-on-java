@@ -1,22 +1,41 @@
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 public class Main {
     public static void main(String[] args) {
-        int groups = 3;
-        int studentsPerGroup = 10;
-        Journal journal = new Journal(groups, studentsPerGroup);
-        ExecutorService executor = Executors.newFixedThreadPool(4);
+        int lines = 30;
+        int repetitionsPerLine = 30;
+        int unsynchronizedLines = 15;
+        int synchronizedLines = lines - unsynchronizedLines;
 
-        executor.execute(new Lecturer(journal, studentsPerGroup));
-        for (int i = 1; i < groups; i++) {
-            executor.execute(new Assistant(journal, i, studentsPerGroup));
+        System.out.println("\nWithout synchronized method:\n");
+        Thread t1 = new Thread(new SymbolPrinter('|', 0, unsynchronizedLines * repetitionsPerLine / 3, false));
+        Thread t2 = new Thread(new SymbolPrinter('\\', 1, unsynchronizedLines * repetitionsPerLine / 3, false));
+        Thread t3 = new Thread(new SymbolPrinter('/', 2, unsynchronizedLines * repetitionsPerLine / 3, false));
+
+        t1.start();
+        t2.start();
+        t3.start();
+
+        try {
+            t1.join();
+            t2.join();
+            t3.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
+        System.out.println("\nWith synchronized method:\n");
+        Thread s1 = new Thread(new SymbolPrinter('|', 0, synchronizedLines * repetitionsPerLine / 3, true));
+        Thread s2 = new Thread(new SymbolPrinter('\\', 1, synchronizedLines * repetitionsPerLine / 3, true));
+        Thread s3 = new Thread(new SymbolPrinter('/', 2, synchronizedLines * repetitionsPerLine / 3, true));
 
-        executor.shutdown();
-        while (!executor.isTerminated()) {
+        s1.start();
+        s2.start();
+        s3.start();
+
+        try {
+            s1.join();
+            s2.join();
+            s3.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
-
-        journal.printJournal();
     }
 }
