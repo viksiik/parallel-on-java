@@ -6,7 +6,7 @@ public class Main {
         int groups = 3;
         int studentsPerGroup = 10;
         Journal journal = new Journal(groups, studentsPerGroup);
-        ExecutorService executor = Executors.newFixedThreadPool(3);
+        ExecutorService executor = Executors.newFixedThreadPool(4);
 
         executor.execute(new Lecturer(journal, groups, studentsPerGroup));
 
