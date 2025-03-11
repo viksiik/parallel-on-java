@@ -18,7 +18,6 @@ class SymbolPrinter implements Runnable {
         if (!synchronizedMode) {
             for (int i = 0; i < totalTurns; i++) {
                 System.out.print(symbol);
-                if ((i + 1) % 30 == 0) System.out.println();
             }
         } else {
             for (int i = 0; i < totalTurns; i++) {
