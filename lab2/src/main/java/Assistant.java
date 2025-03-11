@@ -2,21 +2,19 @@ import java.util.Random;
 
 class Assistant implements Runnable {
     private final Journal journal;
-    private final int groupIndex;
-    private final int groupSize;
-    private final Random random = new Random();
+    private final int group;
+    private final int students;
 
-    public Assistant(Journal journal, int groupIndex, int groupSize) {
+    public Assistant(Journal journal, int group, int students) {
         this.journal = journal;
-        this.groupIndex = groupIndex;
-        this.groupSize = groupSize;
+        this.group = group;
+        this.students = students;
     }
 
     @Override
     public void run() {
-        for (int i = 0; i < groupSize; i++) {
-            int grade = random.nextInt(101);
-            journal.assignGrade(groupIndex, i, grade);
+        for (int s = 0; s < students; s++) {
+            journal.assignGrade(group, s, (int) (Math.random() * 100));
         }
     }
 }

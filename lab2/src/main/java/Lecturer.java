@@ -2,19 +2,21 @@ import java.util.Random;
 
 class Lecturer implements Runnable {
     private final Journal journal;
-    private final int groupSize;
-    private final Random random = new Random();
+    private final int groups;
+    private final int students;
 
-    public Lecturer(Journal journal, int groupSize) {
+    public Lecturer(Journal journal, int groups, int students) {
         this.journal = journal;
-        this.groupSize = groupSize;
+        this.groups = groups;
+        this.students = students;
     }
 
     @Override
     public void run() {
-        for (int i = 0; i < groupSize; i++) {
-            int grade = random.nextInt(101);
-            journal.assignGrade(0, i, grade);
+        for (int g = 0; g < groups; g++) {
+            for (int s = 0; s < students; s++) {
+                journal.assignGrade(g, s, (int) (Math.random() * 100));
+            }
         }
     }
 }
