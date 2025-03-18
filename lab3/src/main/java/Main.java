@@ -13,7 +13,8 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        int size = 1500;
+        int size = 1000;
+        int blockSize = 100;
         System.out.println("Generating matrices...");
         int[][] A = generateMatrix(size);
         int[][] B = generateMatrix(size);
@@ -21,16 +22,16 @@ public class Main {
 
         long startTime, endTime;
 
-        System.out.println("Sequential multiplication:");
+        System.out.println("Sequential Fox multiplication:");
         startTime = System.nanoTime();
-        Result resultSeq = MatrixMultiplier.multiplySequential(A, B);
+        int[][] resultSeq = FoxMatrixMultiplier.foxSequential(A, B, blockSize);
         endTime = System.nanoTime();
         double timeSeq = (endTime - startTime) / 1e6;
-        System.out.println("Time: " + timeSeq + " ms\n");
+        System.out.println("Time: " + timeSeq + " ms");
 
-        System.out.println("Parallel multiplication:");
+        System.out.println("Parallel Fox multiplication:");
         startTime = System.nanoTime();
-        Result resultParallel = MatrixMultiplier.multiplyParallel(A, B);
+        int[][] resultParallel = FoxMatrixMultiplier.foxParallel(A, B, blockSize);
         endTime = System.nanoTime();
         double timeParallel = (endTime - startTime) / 1e6;
         System.out.println("Time: " + timeParallel + " ms");
