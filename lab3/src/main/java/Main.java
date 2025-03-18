@@ -13,7 +13,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        int size = 1500;
+        int size = 1000;
         System.out.println("Generating matrices...");
         int[][] A = generateMatrix(size);
         int[][] B = generateMatrix(size);
