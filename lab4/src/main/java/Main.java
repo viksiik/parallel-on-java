@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) {
-        String directory = "D:\\kpi\\parallel-on-java\\lab4\\technologie";
+        String directory = "D:\\kpi\\parallel-on-java\\technologie";
 
         try {
             List<Path> files = Files.list(Paths.get(directory))
