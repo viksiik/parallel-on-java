@@ -147,5 +147,23 @@ public class Main {
         System.out.printf("\nSpeedup: %.2f\n", speedup);
         double efficiency = speedup / threads;
         System.out.printf("Efficiency: %.2f\n", efficiency);
+
+        int[] threadCounts = {4, 6, 8, 16, 32};
+        for (int threadsExp : threadCounts) {
+            ForkJoinPool poolExp = new ForkJoinPool(threads);
+            long startParallelExp = System.nanoTime();
+            WordStats parallelStatsExp = pool.invoke(new WordStatsTask(words, 0, words.size()));
+            long endParallelExp = System.nanoTime();
+            long timeParallelExp = endParallelExp - startParallelExp;
+
+            System.out.println("\n----- Parallel Algorithm with " + threadsExp + " threads -----");
+            System.out.printf("Execution time: %.2f ms\n", timeParallel / 1e6);
+
+            double speedupExp = (double) timeSequential / timeParallelExp;
+            System.out.printf("Speedup: %.2f\n", speedupExp);
+            double efficiencyExp = speedupExp / threadsExp;
+            System.out.printf("Efficiency: %.2f\n", efficiencyExp);
+        }
+
     }
 }
