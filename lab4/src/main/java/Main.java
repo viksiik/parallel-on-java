@@ -18,7 +18,7 @@ public class Main {
                 return;
             }
 
-            ForkJoinPool pool = new ForkJoinPool();
+            ForkJoinPool pool = new ForkJoinPool(6);
 
             long start = System.nanoTime();
             CommonWordsTask task = new CommonWordsTask(files);
