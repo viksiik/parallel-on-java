@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
-        String directory = "D:\\kpi\\parallel-on-java\\lab4\\food";
+        String directory = "D:\\kpi\\parallel-on-java\\food";
         try {
             List<Path> files = Files.list(Paths.get(directory))
                     .filter(Files::isRegularFile)
