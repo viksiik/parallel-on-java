@@ -14,6 +14,8 @@ public class ServiceQueue {
     private final ExecutorService servicePool;
     private final Queue<Runnable> queue;
     private final Random random = new Random();
+    private final int runId;
+
 
     private int rejectedClients = 0;
     private int totalQueueLength = 0;
@@ -22,8 +24,9 @@ public class ServiceQueue {
 
     private final CountDownLatch completionLatch;
 
-    public ServiceQueue(int id) {
+    public ServiceQueue(int id, int runId) {
         this.id = id;
+        this.runId = runId;
         this.queue = new LinkedList<>();
         this.servicePool = Executors.newFixedThreadPool(NUM_CHANNELS);
         this.completionLatch = new CountDownLatch(CLIENTS_PER_QUEUE);
@@ -123,8 +126,8 @@ public class ServiceQueue {
                 synchronized (queue) {
                     int queueSize = queue.size();
                     int active = ((ThreadPoolExecutor) servicePool).getActiveCount();
-                    System.out.printf("[Queue %d] Active tasks: %d, In queue: %d, Rejections: %d, Served: %d%n",
-                            id, active, queueSize, rejectedClients, servedClients);
+                    System.out.printf("[Queue %d in run %d] Active tasks: %d, In queue: %d, Rejections: %d, Served: %d%n",
+                            id, runId, active, queueSize, rejectedClients, servedClients);
                 }
                 try {
                     Thread.sleep(200);
